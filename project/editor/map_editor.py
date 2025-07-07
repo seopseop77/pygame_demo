@@ -11,9 +11,13 @@ COLOR_LOOKUP = {
     'P': (0, 0, 255),
     'G': (255, 0, 0),
     'C': (255, 215, 0),
+    'S': (0, 255, 255),
+    'I': (255, 255, 0),
+    'F': (200, 0, 200),
+    'E': (0, 200, 0),
 }
 
-TILE_TYPES = ['.', '#', 'P', 'G', 'C']
+TILE_TYPES = ['.', '#', 'P', 'G', 'C', 'S', 'I', 'F', 'E']
 
 class MapEditor:
     """Interactive tile-based map editor."""
@@ -40,7 +44,17 @@ class MapEditor:
                         running = False
                     elif event.key == pygame.K_s:
                         save_map(self.file_path, self.map_data)
-                    elif event.key in (pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5):
+                    elif event.key in (
+                        pygame.K_1,
+                        pygame.K_2,
+                        pygame.K_3,
+                        pygame.K_4,
+                        pygame.K_5,
+                        pygame.K_6,
+                        pygame.K_7,
+                        pygame.K_8,
+                        pygame.K_9,
+                    ):
                         index = event.key - pygame.K_1
                         self.selected = TILE_TYPES[index]
                 if event.type == pygame.MOUSEBUTTONDOWN:

@@ -7,10 +7,11 @@ MOVE_SPEED = -2
 class Enemy(GameObject):
     """Simple enemy that walks left and right."""
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, point_value=100):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=(255, 0, 0))
         self.vel_x = MOVE_SPEED
         self.vel_y = 0
+        self.point_value = point_value
 
     def apply_gravity(self):
         self.vel_y += 0.5
