@@ -1,0 +1,5 @@
+# Python bytecode cache
+__pycache__/
+
+# (선택) .pyc, .pyo 파일도 함께 무시
+*.py[cod]

@@ -2,7 +2,7 @@ import pygame
 from .game_object import GameObject
 
 TILE_SIZE = 32
-MOVE_SPEED = 2
+MOVE_SPEED = -2
 
 class Enemy(GameObject):
     """Simple enemy that walks left and right."""
