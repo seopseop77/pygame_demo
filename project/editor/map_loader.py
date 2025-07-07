@@ -2,10 +2,10 @@
 import os
 from typing import List, Tuple
 
-from game.tile import Tile
+from game.tile import Tile, GoalTile
 from game.player import Player
 from game.enemy import Enemy
-from game.item import Item
+from game.item import Item, SpeedBoostItem, InvincibilityItem, ProjectileItem
 
 TILE_SIZE = 32
 
@@ -38,6 +38,15 @@ def load_map(file_path: str) -> Tuple[List[List[str]], Player, list, list, list]
                 enemies.append(Enemy(world_x, world_y))
             elif char == 'C':
                 items.append(Item(world_x, world_y, 'coin'))
+            elif char == 'S':
+                items.append(SpeedBoostItem(world_x, world_y))
+            elif char == 'I':
+                items.append(InvincibilityItem(world_x, world_y))
+            elif char == 'F':
+                items.append(ProjectileItem(world_x, world_y))
+            elif char == 'E':
+                tiles.append(GoalTile(world_x, world_y))
+    player.spawn = player.rect.topleft
     return lines, player, tiles, enemies, items
 
 
