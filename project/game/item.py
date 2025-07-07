@@ -1,7 +1,6 @@
 import pygame
 from .game_object import GameObject
-
-TILE_SIZE = 32
+from config import TILE_SIZE, ITEM_SIZE, COLORS
 
 class Item(GameObject):
     """Base collectible item.
@@ -11,8 +10,17 @@ class Item(GameObject):
 
     def __init__(self, x, y, item_type, color=None):
         if color is None:
-            color = (255, 215, 0) if item_type == "coin" else (0, 255, 0)
-        super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=color)
+            if item_type == "coin":
+                color = COLORS["coin"]
+            else:
+                color = COLORS["speed"]
+        super().__init__(
+            x + (TILE_SIZE - ITEM_SIZE) // 2,
+            y + (TILE_SIZE - ITEM_SIZE) // 2,
+            ITEM_SIZE,
+            ITEM_SIZE,
+            color=color,
+        )
         self.item_type = item_type
 
 
@@ -23,7 +31,7 @@ class SpeedBoostItem(Item):
     """
 
     def __init__(self, x, y):
-        super().__init__(x, y, "speed", color=(0, 255, 255))
+        super().__init__(x, y, "speed", color=COLORS["speed"])
 
 
 class InvincibilityItem(Item):
@@ -33,7 +41,7 @@ class InvincibilityItem(Item):
     """
 
     def __init__(self, x, y):
-        super().__init__(x, y, "invincibility", color=(255, 255, 0))
+        super().__init__(x, y, "invincibility", color=COLORS["invincibility"])
 
 
 class ProjectileItem(Item):
@@ -43,4 +51,4 @@ class ProjectileItem(Item):
     """
 
     def __init__(self, x, y):
-        super().__init__(x, y, "projectile", color=(200, 0, 200))
+        super().__init__(x, y, "projectile", color=COLORS["projectile_item"])

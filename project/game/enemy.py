@@ -1,7 +1,7 @@
 import pygame
 from .game_object import GameObject
+from config import TILE_SIZE, COLORS
 
-TILE_SIZE = 32
 MOVE_SPEED = -2
 
 class Enemy(GameObject):
@@ -11,7 +11,7 @@ class Enemy(GameObject):
     """
 
     def __init__(self, x, y, point_value=100):
-        super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=(255, 0, 0))
+        super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=COLORS["enemy"])
         self.vel_x = MOVE_SPEED
         self.vel_y = 0
         self.point_value = point_value
