@@ -5,7 +5,10 @@ TILE_SIZE = 32
 MOVE_SPEED = -2
 
 class Enemy(GameObject):
-    """Simple enemy that walks left and right."""
+    """Simple enemy that walks left and right.
+
+    Red square (255, 0, 0)
+    """
 
     def __init__(self, x, y, point_value=100):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=(255, 0, 0))

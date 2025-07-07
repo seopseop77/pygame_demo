@@ -9,7 +9,10 @@ MOVE_SPEED = 4
 TILE_SIZE = 32
 
 class Player(GameObject):
-    """Player controlled character."""
+    """Player controlled character.
+
+    Blue square (0, 0, 255)
+    """
 
     def __init__(self, x, y):
         super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=(0, 0, 255))
@@ -78,7 +81,7 @@ class Player(GameObject):
                         self.rect.top = tile.rect.bottom
                         self.vel_y = 0
 
-    def update(self, tiles, enemies, items, projectiles):
+    def update(self, tiles, enemies, items, projectiles, map_width):
         """Update the player position and handle interactions."""
         self.handle_input()
         self.apply_gravity()
@@ -86,9 +89,12 @@ class Player(GameObject):
         # Horizontal movement
         self.rect.x += self.vel_x
         self.horizontal_collisions(tiles)
+        # Clamp to map bounds and vertical movement
+        self.rect.x = max(0, min(self.rect.x, map_width - self.rect.width))
         # Vertical movement
         self.rect.y += self.vel_y
         self.vertical_collisions(tiles)
+        self.rect.x = max(0, min(self.rect.x, map_width - self.rect.width))
         # Item collection
         current_time = pygame.time.get_ticks()
         for item in items[:]:

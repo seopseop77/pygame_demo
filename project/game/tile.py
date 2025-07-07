@@ -4,9 +4,9 @@ from .game_object import GameObject
 TILE_SIZE = 32
 
 COLOR_MAP = {
-    '#': (100, 100, 100),
-    '.': (0, 0, 0),
-    'E': (0, 200, 0),
+    '#': (100, 100, 100),  # Solid wall/ground - gray
+    '.': (0, 0, 0),        # Empty background - black
+    'E': (0, 200, 0),      # Goal tile - green
 }
 
 class Tile(GameObject):

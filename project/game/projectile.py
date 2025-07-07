@@ -4,7 +4,10 @@ from .game_object import GameObject
 TILE_SIZE = 32
 
 class Projectile(GameObject):
-    """Simple horizontal projectile."""
+    """Simple horizontal projectile.
+
+    Dark gray rectangle (50, 50, 50)
+    """
 
     def __init__(self, x, y, direction):
         super().__init__(x, y, 10, 4, color=(50, 50, 50))
