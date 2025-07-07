@@ -1,12 +1,11 @@
 import pygame
 from .game_object import GameObject
-
-TILE_SIZE = 32
+from config import TILE_SIZE, COLORS
 
 COLOR_MAP = {
-    '#': (100, 100, 100),  # Solid wall/ground - gray
-    '.': (0, 0, 0),        # Empty background - black
-    'E': (0, 200, 0),      # Goal tile - green
+    '#': COLORS["wall"],
+    '.': (0, 0, 0),
+    'E': COLORS["goal"],
 }
 
 class Tile(GameObject):

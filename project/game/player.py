@@ -1,12 +1,12 @@
 import pygame
 from .game_object import GameObject
 from .projectile import Projectile
+from config import TILE_SIZE, COLORS
 
 # Physics constants
 GRAVITY = 0.5
 JUMP_POWER = -10
 MOVE_SPEED = 4
-TILE_SIZE = 32
 
 class Player(GameObject):
     """Player controlled character.
@@ -15,7 +15,7 @@ class Player(GameObject):
     """
 
     def __init__(self, x, y):
-        super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=(0, 0, 255))
+        super().__init__(x, y, TILE_SIZE, TILE_SIZE, color=COLORS["player"])
         self.spawn = (x, y)
         self.vel_x = 0
         self.vel_y = 0
@@ -30,6 +30,7 @@ class Player(GameObject):
         self.start_time = 0
         self.end_time = 0
         self.direction = 1
+        self.lives = 3
 
     def handle_input(self):
         """Process keyboard input for movement."""
@@ -117,8 +118,12 @@ class Player(GameObject):
                     self.vel_y = JUMP_POWER / 2
                 else:
                     if current_time > self.invincible_until:
-                        self.rect.topleft = self.spawn
-                        self.vel_x = self.vel_y = 0
-                        self.deaths += 1
+                        if self.can_shoot:
+                            self.can_shoot = False
+                        else:
+                            self.rect.topleft = (self.spawn[0], self.spawn[1] - TILE_SIZE)
+                            self.vel_x = self.vel_y = 0
+                            self.deaths += 1
+                            self.lives -= 1
                     else:
                         enemies.remove(enemy)

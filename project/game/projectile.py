@@ -1,7 +1,6 @@
 import pygame
 from .game_object import GameObject
-
-TILE_SIZE = 32
+from config import COLORS
 
 class Projectile(GameObject):
     """Simple horizontal projectile.
@@ -10,7 +9,7 @@ class Projectile(GameObject):
     """
 
     def __init__(self, x, y, direction):
-        super().__init__(x, y, 10, 4, color=(50, 50, 50))
+        super().__init__(x, y, 10, 4, color=COLORS["projectile"])
         self.direction = direction
         self.speed = 8
 

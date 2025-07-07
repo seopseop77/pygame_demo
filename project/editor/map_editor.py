@@ -4,17 +4,18 @@ from typing import List
 
 from .map_loader import save_map
 from game.tile import TILE_SIZE
+from config import COLORS
 
 COLOR_LOOKUP = {
     '.': (0, 0, 0),
-    '#': (100, 100, 100),
-    'P': (0, 0, 255),
-    'G': (255, 0, 0),
-    'C': (255, 215, 0),
-    'S': (0, 255, 255),
-    'I': (255, 255, 0),
-    'F': (200, 0, 200),
-    'E': (0, 200, 0),
+    '#': COLORS["wall"],
+    'P': COLORS["player"],
+    'G': COLORS["enemy"],
+    'C': COLORS["coin"],
+    'S': COLORS["speed"],
+    'I': COLORS["invincibility"],
+    'F': COLORS["projectile_item"],
+    'E': COLORS["goal"],
 }
 
 TILE_TYPES = ['.', '#', 'P', 'G', 'C', 'S', 'I', 'F', 'E']

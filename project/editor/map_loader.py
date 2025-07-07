@@ -6,8 +6,7 @@ from game.tile import Tile, GoalTile
 from game.player import Player
 from game.enemy import Enemy
 from game.item import Item, SpeedBoostItem, InvincibilityItem, ProjectileItem
-
-TILE_SIZE = 32
+from config import TILE_SIZE
 
 
 def load_map(file_path: str) -> Tuple[List[List[str]], Player, list, list, list]:

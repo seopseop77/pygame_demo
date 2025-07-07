@@ -4,10 +4,7 @@ import pygame
 from editor.map_loader import load_map
 from editor.map_editor import MapEditor
 from game.projectile import Projectile
-
-TILE_SIZE = 32
-SCREEN_WIDTH = 640
-SCREEN_HEIGHT = 480
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, TILE_SIZE, COLORS
 
 class Game:
     """Main game class handling game loop.
@@ -16,9 +13,9 @@ class Game:
     the map is wider than the screen.
     """
 
-    def __init__(self, map_file: str):
+    def __init__(self, map_file: str, screen: pygame.Surface | None = None):
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = screen or pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Platformer")
         self.clock = pygame.time.Clock()
         self.map_file = map_file
@@ -28,6 +25,7 @@ class Game:
         self.running = True
         self.camera_x = 0
         self.projectiles = []
+        self.success = False
 
     def load_world(self):
         """Load game objects from map file."""
@@ -97,8 +95,15 @@ class Game:
             for tile in self.tiles:
                 if tile.tile_type == 'E' and self.player.rect.colliderect(tile.rect):
                     self.player.end_time = pygame.time.get_ticks()
+                    self.success = True
                     self.running = False
                     break
+
+            # Out of lives check
+            if self.player.lives <= 0:
+                self.player.end_time = pygame.time.get_ticks()
+                self.success = False
+                self.running = False
             # Draw
             self.draw()
             pygame.display.flip()
@@ -106,7 +111,7 @@ class Game:
         pygame.quit()
 
     def draw(self):
-        self.screen.fill((135, 206, 235))
+        self.screen.fill(COLORS["background"])
         for tile in self.tiles:
             tile.draw(self.screen, self.camera_x)
         for item in self.items:
@@ -120,9 +125,17 @@ class Game:
 
     def draw_ui(self):
         font = pygame.font.SysFont(None, 24)
-        text = font.render(f"Score: {self.player.score}", True, (0, 0, 0))
-        self.screen.blit(text, (10, 10))
-        status_y = 30
+        current_time = (pygame.time.get_ticks() - self.player.start_time) / 1000
+        score = (
+            self.player.enemies_killed * 100
+            - (self.player.deaths * 100)
+            - (current_time * 2)
+        )
+        score_text = font.render(f"Score: {int(score)}", True, (0, 0, 0))
+        self.screen.blit(score_text, (10, 10))
+        lives = font.render(f"Lives: {self.player.lives}", True, (0, 0, 0))
+        self.screen.blit(lives, (10, 30))
+        status_y = 50
         if pygame.time.get_ticks() < self.player.invincible_until:
             inv = font.render("INVINCIBLE", True, (255, 0, 0))
             self.screen.blit(inv, (10, status_y))
@@ -135,5 +148,21 @@ class Game:
         time_taken = (self.player.end_time - self.player.start_time) / 1000
         enemies_score = self.player.enemies_killed * 100
         final_score = enemies_score - (self.player.deaths * 100) - (time_taken * 2)
-        print(f"Final Score: {int(final_score)}")
+        font = pygame.font.SysFont(None, 36)
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.KEYDOWN:
+                    running = False
+            self.screen.fill(COLORS["background"])
+            if self.success:
+                msg = f"Level Complete! Score: {int(final_score)}"
+            else:
+                msg = "Game Over"
+            text = font.render(msg, True, (0, 0, 0))
+            rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+            self.screen.blit(text, rect)
+            pygame.display.flip()
 
