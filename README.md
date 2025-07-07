@@ -1,2 +1,13 @@
-# pygame_demo
-서울과학고등학교 컴퓨터과학 2 프로젝트를 위한 기본 베이스라인 제공 코드 
+# Pygame Platformer Demo
+
+This repository contains a simple Mario-style side scrolling platformer built with Pygame.
+All game objects are rendered using basic colored rectangles so no image assets
+are required.
+
+## Running
+
+```
+python3 project/main.py
+```
+
+Press `E` during the game to open the map editor. Use `1`-`5` to change tiles, left click to place, right click to erase, `S` to save, and `ESC` to return to the game.
