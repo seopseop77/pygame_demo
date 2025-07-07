@@ -10,7 +10,11 @@ SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 
 class Game:
-    """Main game class handling game loop."""
+    """Main game class handling game loop.
+
+    Screen size is fixed at 640x480 and the camera follows the player when
+    the map is wider than the screen.
+    """
 
     def __init__(self, map_file: str):
         pygame.init()
@@ -30,6 +34,15 @@ class Game:
         data = load_map(self.map_file)
         self.map_data, self.player, self.tiles, self.enemies, self.items = data
         self.map_width = len(self.map_data[0]) * TILE_SIZE if self.map_data else SCREEN_WIDTH
+        self.fix_overlaps()
+
+    def fix_overlaps(self):
+        """Move objects out of wall tiles if they overlap when loaded."""
+        solids = [t for t in self.tiles if t.tile_type == '#']
+        for obj in [self.player, *self.enemies, *self.items]:
+            for tile in solids:
+                if obj.rect.colliderect(tile.rect):
+                    obj.rect.bottom = tile.rect.top
 
     def run(self):
         """Main loop for the game."""
@@ -44,7 +57,13 @@ class Game:
                     self.map_data = editor.run()
                     self.load_world()
             # Update objects
-            self.player.update(self.tiles, self.enemies, self.items, self.projectiles)
+            self.player.update(
+                self.tiles,
+                self.enemies,
+                self.items,
+                self.projectiles,
+                self.map_width,
+            )
             for enemy in self.enemies:
                 enemy.update(self.tiles)
             for projectile in self.projectiles[:]:
